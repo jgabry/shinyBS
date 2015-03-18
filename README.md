@@ -3,43 +3,97 @@ shinyBS
 
 **shinyBS** is a package that adds several additional Twitter Boostrap 
 components to shiny. RStudio recently updated shiny to work with Bootstrap3 
-which completely broke the original shinyBS. I am updating shinyBS to
-work with the newest versions of shiny but it is taking some time. 
+which has completely broken shinyBS. I am in the process of updating shinyBS to
+work with the newest versions of shiny but it may take some time. As I get 
+components working I will add them to this branch. Once I have it completely 
+working I will update the version on CRAN. You can install shinyBS from this 
+branch by first installing `devtools`. At the R prompt type:
 
-Bootstrap has removed some components from version 3 (namely typeaheads 
-and submenus in dropdowns). I originally intended to create work arounds
-to keep these features available in shinyBS, despite the fact that they 
-were removed from Bootstrap. In the interest of avoiding "feature creep"
-I've decided that I am only going to restore those features that are 
-present in the version of Bootstrap supported by Shiny. This will break
-backwards compatibility for some, and I apologize for this. 
+```R
+install.packages("devtools")
+```
 
-Concentrating on getting Bootstrap's core functionality incorporated into
-the newest version of shinyBS will allow me to get a working version back
-on CRAN as quickly as possible. After that is done, I will look at either 
-reincorporating the lost functionality back into shinyBS or creating new	
-packages that give users access to this functionality.
+After installing `devtools` in R you can install shinyBS by typing at the R prompt: 
 
-I have most of the functionality that I intend to release with shinyBS 0.50 
-working now and am now working primarily on testing and documentation. I hope
-to have the new version on CRAN in the first half of March 2015.
+```R
+devtools::install_github("ebailey78/shinyBS", ref = "shinyBS3")
+```
 
-Features that will remain in version 0.5 include:
+### What's New
 
+#### Version 0.50 (Bootstrap3 Update)
 * Alerts
-* Tooltips
-* Popovers
-* Modal Windows
+    + Removed 'block' option
+    + Defaults to 'info' type
 * Collapse Panels
-* Button upgrades
-
-Features that will not be included in version 0.5 include:
-
-* Navbars and related components
-* Typeaheads
-* Progress Bars
+    + Now accepts a 'type' argument to change styling of header
+    + The 'multiple' option can no longer be changed from update collapse.
+    + can change style of panels with the ```updateCollapse()``` function
+* bsGlyph
+    + Removed because of added native shiny support
+* bsModal
+    + Removed the href option (depreciated in bootstrap v3.3.0)
+    + Added "size" option
+    + added toggle argument to ```bsToggleModal()``` so you can explicitly tell 
+      the modal to open or close
+* Tooltips and Popovers
+    + Added an options argument that allows more access to tooltip options for
+      advanced users.
+* Buttons
+    + Simplified underlying code, now all buttons created with ```bsButton``` 
+      function
 * Button Groups
+    + In Progress
 
-Sorry for any inconvenience,
+#### Version 0.30 (depreciated)
 
-Eric
+* **bsMenus**
+    * Completely reworked how navbars are implemented. As a result, all the `bsNav` functions have been depreciated and replaced with functions that start with `bsMenu`.
+      + `bsMenu()` - creates three different types of menus:
+        * toolbar - similar to `bsNavDropdown()`, creates top-level menus in a navbar
+        * submenu - creates submenus in an existing toolbar or popup menu
+        * popup - creates a contextual popup menu that appears when you right-click on an ui element
+      + `bsMenuItem()` - creates three different types of menu elements:
+        * command - the equivilent of an `actionButton`.
+        * checkbox - the equivilent of a `checkboxInput`.
+        * radio - the equivilent of a `radioInput`. Provided multiple radio elements the same `group` attribute to link them together.
+      + `bsMenuWrap()` - A wrapper for any text-like inputs (e.g., `textInput()`, `numericInput()`, or `bsTypeAhead()`) or buttons that format them to work better within navbars. This replaces the individual functions that existed in the `bsNav` scheme. Only `bsMenuDateRangeInput()` remains as a stand-alone function for menubar inputs
+      + `bsMenuGroup()` - A convenience function that allows you to create many `bsMenuItem()` elements at once.
+      + `bsMenuItemGroup()` - A function that ties multiple menu elements together so that changing one automatically changes the others. This is so that you can have access to the same functionality in multiple locations (e.g., being able to add a trend line to a graph from a navbar menu or from a contextual popup menu.)
+      + `bsMenuDivider()` - adds a horizontal dividing line to a menu to help organize elements.
+      + `bsMenuHeader()` - adds a non-clickable heading to a menu, again, for organizational purposes.
+* **bsModal**
+    * You can now create modal windows with the `bsModal()` function. These are trigger from a button or link and can contain any combination of inputs, outputs, or standard html.
+* **Alerts**
+    * Added a check so that if an alert already exists with the same alertId as an alert you are trying to create, the new alert isn't created.
+* **Bug Fixes/Requested Changes**
+    * **Table Highlighting**
+    * Per Request: highlightCells() now accepts a `column` argument which limits cell highlighting to that column.
+ 
+#### Version 0.20 (released: 2014-03-19)
+
+* **pageWithNavBar**
+  * I forgot to include the pageWithNavbar function in the NAMESPACE file so it wasn't exported
+* **Buttons/Button Groups** 
+  * singletons for including shinyBS's javascript and CSS files weren't added when only button functions were included in an app
+  * added `block` argument for creating block level buttons and button groups
+  * added `vertical` argument for creating verically oriented button groups
+  
+* **Tooltips/Popovers**
+  * Tooltips and Popovers will now work with the new selectize-type selectInput's in shiny 0.9.0
+* **Tables**
+  * `highlightCells` lets you highlight table cells based on their content
+  * `highlightRows` lets you highlight table rows based on the content of a table column
+
+#### Version 0.10 (released: 2014-03-11)
+
+* **Alerts** - Create alert anchors in your `ui.R` script and add alerts from `server.R`
+* **Tooltips** - Add and configure tooltips on any element with an `inputId` or `outputId` with `bsTooltip()` from the ui or with `addToolTip()` from the server.
+* **Popovers** - Works the same as Tooltips but useful for more content heavy applications.
+* **TypeAhead** - Works just like a 'textInput' but you can provide custom autocomplete lists to guide the user to specific inputs.
+* **Progress Bars** - Fully configurable Progress bars that can be updated and changed from `server.R`.
+* **Navigation Bars** - Create Bootstrap style navigation bars with buttons, links, dropdowns, etc that control your shiny app.
+* **Collapse Panels** - Create collapsable panels that allow you to remove some clutter from your app.
+* **Buttons Groups** - Create button groups that behave like radio buttons or checkbox groups
+* **Buttons** - Access Twitter Bootstrap styles and sizes for action buttons and toggle buttons
+
