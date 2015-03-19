@@ -169,7 +169,7 @@ createTooltipOrPopoverOnUI <- function(id, type, options) {
   
   options = paste0("{'", paste(names(options), options, sep = "': '", collapse = "', '"), "'}")
   
-  sbsHead(tags$script(paste0("$(document).ready(function() {setTimeout(function() {shinyBS.addTooltip('", id, "', '", type, "', ", options, ")}, 100)});")))
+  sbsHead(tags$script(paste0("$(document).ready(function() {setTimeout(function() {shinyBS.addTooltip('", id, "', '", type, "', ", options, ")}, 500)});")))
   
 }
 
@@ -181,7 +181,7 @@ buildTooltipOrPopoverOptionsList <- function(title, placement, trigger, options,
   
   if(!missing(content)) {
     if(is.null(options$content)) {
-      options$content = content
+      options$content = HTML(content)
     }
   }
   
