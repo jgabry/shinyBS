@@ -1,4 +1,4 @@
-Stable branch of **shinyBS** for use with **shinyStan** package 
+Stable branch of **shinyBS** for use with [**shinyStan**](https://github.com/stan-dev/shinystan) package 
 
 ***
 
